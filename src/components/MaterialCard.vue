@@ -31,6 +31,7 @@ const { product } = defineProps<{ product: any }>();
 
 .label-header {
   margin-left: 20px;
+  line-height: 1.2;
 }
 
 .card {

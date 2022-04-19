@@ -28,4 +28,4 @@ instance.interceptors.response.use(
 
 // instance.interceptors.
 
-export default instance;
+export { instance as axios };
