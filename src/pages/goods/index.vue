@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import MaterialCard from "components/MaterialCard.vue";
-import { axios } from "http/axios/index.ts";
+import { axios } from "utils/http/axios";
 import { ref, effect, onUpdated } from "vue";
 import { useRoute } from "vue-router";
 
@@ -47,9 +47,11 @@ const pageSize = ref(20);
 const route = useRoute();
 const areaId = ref();
 const categoryId = ref();
+const keyword = ref();
 onUpdated(() => {
   areaId.value = route.query.areaId;
   categoryId.value = route.query.categoryId;
+  keyword.value = route.query.keyword;
 });
 
 const products = ref();
@@ -66,6 +68,7 @@ effect(async () => {
         pageNum: pageNum.value,
         areaId: areaId.value,
         categoryId: categoryId.value,
+        keyword: keyword.value,
       },
     });
     total.value = Math.ceil(productData.total / 20);

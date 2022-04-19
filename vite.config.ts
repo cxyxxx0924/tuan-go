@@ -16,7 +16,7 @@ export default defineConfig({
     alias: {
       "@": pathResolve("src"),
       components: pathResolve("src/components"),
-      http: pathResolve("src/utils/http"),
+      utils: pathResolve("src/utils"),
       pages: pathResolve("src/pages"),
     },
   },
