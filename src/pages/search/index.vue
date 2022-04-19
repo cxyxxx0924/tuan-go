@@ -1,11 +1,11 @@
 <template>
   <div class="search-body">
     <div class="search-header">
-      <n-input class="search-bar" placeholder="搜索" @change="handleSearch">
-        <template #prefix>
-          <n-icon :component="FlashOutline" />
-        </template>
-      </n-input>
+      <SearchBar @change="handleSearch"></SearchBar>
+
+      <n-button quaternary type="error" @click="deleteSearch">
+        搜索取消
+      </n-button>
       <n-button quaternary type="error" @click="cancelSearch"> 取消 </n-button>
     </div>
     <div class="search-history">
@@ -43,16 +43,19 @@ import { FlashOutline } from "@vicons/ionicons5";
 import { useLocalStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { hotSearchs } from "utils/options";
+import SearchBar from "components/SearchBar.vue";
 
 const router = useRouter();
 
-const historySearch = useLocalStorage<any>("my-history", { historySearch: [] });
+const historySearch = useLocalStorage<string[]>("my-history", []);
 console.log("history", historySearch.value);
-const history = historySearch.value.historySearch;
+const history = historySearch.value;
 
 function handleSearch(value: string) {
+  console.log("value", value);
+
   if (!history.find((item: any) => item === value)) history.push(value);
-  router.replace({ path: "goods", query: { keyword: value } });
+  router.push({ path: "goods", query: { keywords: value } });
 }
 
 function removeHistory() {
@@ -61,6 +64,9 @@ function removeHistory() {
 
 function cancelSearch() {
   router.back();
+}
+function deleteSearch() {
+  router.push({ path: "goods" });
 }
 </script>
 

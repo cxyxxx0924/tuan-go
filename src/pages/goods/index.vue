@@ -5,31 +5,38 @@
       <n-skeleton text style="width: 60%" />
     </template>
     <template v-else>
-      <div class="goods">
-        <n-grid
-          cols="1 s:2 m:3 l:4 xl:5 2xl:6"
-          :x-gap="12"
-          :y-gap="8"
-          responsive="screen"
-        >
-          <template v-for="item in products" :key="products.id">
-            <n-grid-item>
-              <MaterialCard :product="item" />
-            </n-grid-item>
-          </template>
-        </n-grid>
-      </div>
-      <div class="footer">
-        <n-space justify="center">
-          <n-pagination
-            v-model:page="pageNum"
-            :page-count="total"
-            :page-slot="5"
+      <template v-if="!products.length">
+        <n-empty description="你什么也找不到" size="huge">
+          <template #extra> </template>
+        </n-empty>
+      </template>
+      <template v-else>
+        <div class="goods">
+          <n-grid
+            cols="1 s:2 m:3 l:4 xl:5 2xl:6"
+            :x-gap="12"
+            :y-gap="8"
+            responsive="screen"
           >
-          </n-pagination>
-          <!-- <n-button size="small" type="info" @click="">确定</n-button> -->
-        </n-space>
-      </div>
+            <template v-for="item in products" :key="products.id">
+              <n-grid-item>
+                <MaterialCard :product="item" />
+              </n-grid-item>
+            </template>
+          </n-grid>
+        </div>
+        <div class="footer">
+          <n-space justify="center">
+            <n-pagination
+              v-model:page="pageNum"
+              :page-count="total"
+              :page-slot="5"
+            >
+            </n-pagination>
+            <!-- <n-button size="small" type="info" @click="">确定</n-button> -->
+          </n-space>
+        </div>
+      </template>
     </template>
   </div>
 </template>
@@ -47,11 +54,11 @@ const pageSize = ref(20);
 const route = useRoute();
 const areaId = ref();
 const categoryId = ref();
-const keyword = ref();
+const keywords = ref();
 onUpdated(() => {
   areaId.value = route.query.areaId;
   categoryId.value = route.query.categoryId;
-  keyword.value = route.query.keyword;
+  keywords.value = route.query.keywords;
 });
 
 const products = ref();
@@ -68,7 +75,7 @@ effect(async () => {
         pageNum: pageNum.value,
         areaId: areaId.value,
         categoryId: categoryId.value,
-        keyword: keyword.value,
+        keywords: keywords.value,
       },
     });
     total.value = Math.ceil(productData.total / 20);
@@ -85,6 +92,10 @@ effect(async () => {
   background-color: #f8f8f8;
   padding: 20px;
   padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .goods {
@@ -93,5 +104,8 @@ effect(async () => {
 
 .footer {
   margin-top: 10px;
+}
+.empty {
+  flex: 1;
 }
 </style>
