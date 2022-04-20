@@ -12,6 +12,9 @@ const routes = [
         path: "/goods",
         component: goods,
         alias: "goods",
+        meta: {
+          keepAlive: true,
+        },
       },
     ],
   },
@@ -23,7 +26,17 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes, // `routes: routes` 的缩写
+  routes,
+});
+
+router.afterEach((to) => {
+  // 一定要再afterEach中判断而不是beforeEach，因为beforeEach在点击返回之后获取到的值不准确，每返回一次，会获取到延后一次的to、history
+  if (window.history.state && window.history.state.forward) {
+    // 或者判断 to.forward,window.history.state.forward是vue-router写入的，当返回或前进的时候才会有值
+    to.meta.isBack = true;
+  } else {
+    to.meta.isBack = false;
+  }
 });
 
 export { router };

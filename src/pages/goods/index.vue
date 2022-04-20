@@ -1,9 +1,6 @@
 <template>
   <div class="goods-page">
-    <template v-if="loading">
-      <n-skeleton text :repeat="10" />
-      <n-skeleton text style="width: 60%" />
-    </template>
+    <template v-if="!disabledRef"> </template>
     <template v-else>
       <template v-if="!products.length">
         <n-empty description="你什么也找不到" size="huge">
@@ -44,8 +41,9 @@
 <script setup lang="ts">
 import MaterialCard from "components/MaterialCard.vue";
 import { axios } from "@/utils/http/axios";
-import { ref, effect, onUpdated } from "vue";
+import { ref, effect, onUpdated, onActivated } from "vue";
 import { useRoute } from "vue-router";
+import { useLoadingBar } from "naive-ui";
 
 const pageNum = ref(1);
 const total = ref(0);
@@ -55,20 +53,26 @@ const route = useRoute();
 const areaId = ref();
 const categoryId = ref();
 const keywords = ref();
+
+const loadingBar = useLoadingBar();
+const disabledRef = ref(true);
 onUpdated(() => {
   areaId.value = route.query.areaId;
   categoryId.value = route.query.categoryId;
   keywords.value = route.query.keywords;
 });
 
-const products = ref();
+onActivated(() => {
+  console.log("onActivated");
+});
 
-const loading = ref(true);
+const products = ref([]);
 
 let productData: any;
 effect(async () => {
   try {
-    loading.value = true;
+    loadingBar.start();
+    disabledRef.value = false;
     productData = await axios("/goods/product", {
       params: {
         pageSize: pageSize.value,
@@ -80,8 +84,12 @@ effect(async () => {
     });
     total.value = Math.ceil(productData.total / 20);
     products.value = productData.items;
-    loading.value = false;
+    loadingBar.finish();
+    disabledRef.value = true;
   } catch (error) {
+    loadingBar.error();
+    disabledRef.value = true;
+
     console.error("fetch goods has error", error);
   }
 });

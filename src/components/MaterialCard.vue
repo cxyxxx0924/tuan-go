@@ -34,8 +34,10 @@
 
     <template #footer>
       <n-space justify="space-between">
-        <p class="footer-label">{{ product.infoResourse }}</p>
-        <p class="footer-label">{{ product.releaseTime }}</p>
+        <n-ellipsis style="max-width: 150px">
+          <label class="footer-label">{{ product.infoResourse }}</label>
+        </n-ellipsis>
+        <label class="footer-label">{{ product.releaseTime }}</label>
       </n-space>
     </template>
   </n-card>
@@ -56,10 +58,6 @@ function hanleCard() {
 
 .label-header {
   line-height: 1.2;
-}
-
-.card {
-  height: 330px;
 }
 
 .footer-label {

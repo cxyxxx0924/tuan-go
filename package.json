@@ -23,6 +23,6 @@
     "unplugin-vue-components": "^0.19.3",
     "vfonts": "^0.0.3",
     "vite": "^2.9.2",
-    "vue-tsc": "^0.29.8"
+    "vue-tsc": "^0.34.7"
   }
 }

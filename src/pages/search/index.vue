@@ -1,12 +1,10 @@
 <template>
   <div class="search-body">
     <div class="search-header">
-      <SearchBar @change:value="handleSearch"></SearchBar>
+      <SearchBar v-model:value="searchVal"></SearchBar>
 
-      <n-button quaternary type="error" @click="deleteSearch">
-        搜索取消
-      </n-button>
-      <n-button quaternary type="error" @click="cancelSearch"> 取消 </n-button>
+      <n-button quaternary @click="startSearch"> 搜索 </n-button>
+      <n-button quaternary @click="cancelSearch"> 取消 </n-button>
     </div>
     <div class="search-history">
       <n-space vertical>
@@ -31,7 +29,7 @@
       <h3>热门搜索</h3>
       <n-space>
         <template v-for="item of hotSearchs" :key="item">
-          <n-tag type="error" @click="handleSearch(item)"> {{ item }} </n-tag>
+          <n-tag type="info" @click="handleSearch(item)"> {{ item }} </n-tag>
         </template>
       </n-space>
     </div>
@@ -39,20 +37,21 @@
 </template>
 
 <script setup lang="ts">
-import { FlashOutline } from "@vicons/ionicons5";
 import { useLocalStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { hotSearchs } from "@/utils/options";
 import SearchBar from "components/SearchBar.vue";
+import { ref } from "vue";
 
 const router = useRouter();
+const searchVal = ref("");
 
 const historySearch = useLocalStorage<string[]>("my-history", []);
 console.log("history", historySearch.value);
 const history = historySearch.value;
 
 function handleSearch(value: string) {
-  console.log("value", value);
+  // console.log("value", value);
 
   if (!history.find((item: any) => item === value)) history.push(value);
   router.push({ path: "goods", query: { keywords: value } });
@@ -65,8 +64,18 @@ function removeHistory() {
 function cancelSearch() {
   router.back();
 }
-function deleteSearch() {
-  router.push({ path: "goods" });
+
+function handleInput(value: string) {
+  searchVal.value = value;
+}
+function startSearch() {
+  console.log("searchVal.value", searchVal.value);
+
+  if (searchVal.value) {
+    handleSearch(searchVal.value);
+  } else {
+    router.push({ path: "goods" });
+  }
 }
 </script>
 
