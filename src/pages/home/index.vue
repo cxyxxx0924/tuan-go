@@ -27,7 +27,7 @@
 import SearchBar from "components/SearchBar.vue";
 import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { areaOptions, categoryOptions } from "utils/options";
+import { areaOptions, categoryOptions } from "@/utils/options/index.ts";
 
 const option: any = ref({
   areaId: 0,

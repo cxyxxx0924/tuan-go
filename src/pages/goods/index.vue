@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import MaterialCard from "components/MaterialCard.vue";
-import { axios } from "utils/http/axios";
+import { axios } from "@/utils/http/axios";
 import { ref, effect, onUpdated } from "vue";
 import { useRoute } from "vue-router";
 

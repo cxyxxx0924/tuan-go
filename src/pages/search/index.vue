@@ -1,7 +1,7 @@
 <template>
   <div class="search-body">
     <div class="search-header">
-      <SearchBar @change="handleSearch"></SearchBar>
+      <SearchBar @change:value="handleSearch"></SearchBar>
 
       <n-button quaternary type="error" @click="deleteSearch">
         搜索取消
@@ -42,7 +42,7 @@
 import { FlashOutline } from "@vicons/ionicons5";
 import { useLocalStorage } from "@vueuse/core";
 import { useRouter } from "vue-router";
-import { hotSearchs } from "utils/options";
+import { hotSearchs } from "@/utils/options";
 import SearchBar from "components/SearchBar.vue";
 
 const router = useRouter();
