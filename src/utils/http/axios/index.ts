@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: "https://tg.xuan-niao.com/api",
-  timeout: 1000,
+  timeout: 3000,
 });
 
 instance.interceptors.response.use(
