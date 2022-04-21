@@ -1,42 +1,46 @@
 <template>
   <div class="goods-body">
     <!-- <n-affix :top="0"> -->
-    <div class="goods-page">
-      <n-space vertical>
-        <SearchBar
-          v-model:value="option.keywords"
-          @focus="handleSearchBar"
-        ></SearchBar>
-        <n-select
-          v-model:value="option.areaId"
-          :options="areaOptions"
-          @update:value="handleSelect"
-        />
-        <n-select
-          v-model:value="option.categoryId"
-          @update:value="handleSelect"
-          :options="categoryOptions"
-        />
-      </n-space>
-    </div>
-    <n-loading-bar-provider>
-      <div class="context">
-        <router-view v-slot="{ Component }">
-          <keep-alive>
-            <component
-              :is="Component"
-              v-if="$route.meta.keepAlive"
-              :key="$route.path"
-            />
-          </keep-alive>
-          <component
-            :is="Component"
-            v-if="!$route.meta.keepAlive"
-            :key="$route.path"
+    <n-layout position="absolute" class="goods-page">
+      <n-layout-header class="goods-page" bordered>
+        <n-space vertical>
+          <SearchBar
+            v-model:value="option.keywords"
+            @focus="handleSearchBar"
+          ></SearchBar>
+          <n-select
+            v-model:value="option.areaId"
+            :options="areaOptions"
+            @update:value="handleSelect"
           />
-        </router-view>
-      </div>
-    </n-loading-bar-provider>
+          <n-select
+            v-model:value="option.categoryId"
+            @update:value="handleSelect"
+            :options="categoryOptions"
+          />
+        </n-space>
+      </n-layout-header>
+      <n-layout position="absolute" style="top: 149px">
+        <n-loading-bar-provider>
+          <div class="context">
+            <router-view v-slot="{ Component }">
+              <keep-alive>
+                <component
+                  :is="Component"
+                  v-if="$route.meta.keepAlive"
+                  :key="$route.path"
+                />
+              </keep-alive>
+              <component
+                :is="Component"
+                v-if="!$route.meta.keepAlive"
+                :key="$route.path"
+              />
+            </router-view>
+          </div>
+        </n-loading-bar-provider>
+      </n-layout>
+    </n-layout>
   </div>
 </template>
 <script setup lang="ts">
@@ -55,8 +59,6 @@ const router = useRouter();
 const route = useRoute();
 
 onMounted(() => {
-  console.log("run here onMounted");
-
   const { keywords, areaId, categoryId } = route.query as Record<
     string,
     string
@@ -69,8 +71,6 @@ onMounted(() => {
 });
 
 onActivated(() => {
-  console.log("run here onActivated");
-
   const { keywords } = route.query as Record<string, string>;
 
   option.value.keywords = keywords ? keywords : "";
@@ -100,6 +100,7 @@ function handleSearchBar() {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 .goods-page {
   background-color: #fff;

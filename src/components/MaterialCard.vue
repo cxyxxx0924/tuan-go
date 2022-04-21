@@ -25,7 +25,9 @@
       <n-ellipsis style="max-width: 300px">
         <label>配送范围：{{ product.deliverArea }}</label>
       </n-ellipsis>
-      <label>起送要求：{{ product.purchaseNotes }}</label>
+      <n-ellipsis style="max-width: 300px">
+        <label>起送要求：{{ product.purchaseNotes }}</label>
+      </n-ellipsis>
       <n-ellipsis style="max-width: 300px">
         <label>联系方式：{{ product.contactPhone }}</label>
       </n-ellipsis>
