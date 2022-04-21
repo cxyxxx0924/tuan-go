@@ -30,7 +30,7 @@
       </n-ellipsis>
       <n-space>
         <label>联系方式：</label>
-        <template v-if="product.contactPhone">
+        <template v-if="product.contactPhone.trim()">
           <template v-for="phone of phones" :key="phone">
             <n-button
               dashed
