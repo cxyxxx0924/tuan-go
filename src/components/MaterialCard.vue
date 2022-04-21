@@ -30,17 +30,21 @@
       </n-ellipsis>
       <n-space>
         <label>联系方式：</label>
-        <template v-if="product.contactPhone.trim()">
+        <template v-if="showPhone">
           <template v-for="phone of phones" :key="phone">
             <n-button
               dashed
               type="info"
               size="small"
               @click="handlePhone(phone)"
-              >{{ phone }}</n-button
-            >
+              >{{ phone }}
+            </n-button>
           </template>
         </template>
+
+        <!-- <template v-if="product.contactPhone">
+          
+        </template> -->
       </n-space>
       <n-ellipsis style="max-width: 300px">
         <label>提供企业：{{ product.supportCompany }}</label>
@@ -71,6 +75,8 @@ function hanleCard() {
 }
 const phones = product.contactPhone.split(",");
 phones.length = phones.length > 2 ? 2 : phones.length;
+const showPhone = !!product.contactPhone.trim();
+console.log("showPhone", showPhone);
 function handlePhone(phone: string) {
   console.log("phone", phone);
   message.success("已复制联系方式");
