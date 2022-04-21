@@ -54,7 +54,7 @@ function handleSearch(value: string) {
   // console.log("value", value);
 
   if (!history.find((item: any) => item === value)) history.push(value);
-  router.push({ path: "goods", query: { keywords: value } });
+  router.replace({ path: "goods", query: { keywords: value } });
 }
 
 function removeHistory() {
@@ -74,7 +74,7 @@ function startSearch() {
   if (searchVal.value) {
     handleSearch(searchVal.value);
   } else {
-    router.push({ path: "goods" });
+    router.replace({ path: "goods" });
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <n-card :hoverable="true" class="card" @click="hanleCard">
+  <n-card :hoverable="true" class="card">
     <template #header>
       <div class="card-header">
         <n-space vertical>
@@ -28,10 +28,23 @@
       <n-ellipsis style="max-width: 300px">
         <label>起送要求：{{ product.purchaseNotes }}</label>
       </n-ellipsis>
+      <n-space>
+        <label>联系方式：</label>
+        <template v-if="product.contactPhone">
+          <template v-for="phone of phones" :key="phone">
+            <n-button
+              dashed
+              type="info"
+              size="small"
+              @click="handlePhone(phone)"
+              >{{ phone }}</n-button
+            >
+          </template>
+        </template>
+      </n-space>
       <n-ellipsis style="max-width: 300px">
-        <label>联系方式：{{ product.contactPhone }}</label>
+        <label>提供企业：{{ product.supportCompany }}</label>
       </n-ellipsis>
-      <label>提供企业：{{ product.supportCompany }}</label>
     </n-space>
 
     <template #footer>
@@ -46,10 +59,23 @@
 </template>
 
 <script lang="ts" setup>
+import { useMessage } from "naive-ui";
+import useClipboard from "vue-clipboard3";
 const { product } = defineProps<{ product: any }>();
+const message = useMessage();
+const { toClipboard } = useClipboard();
+
 function hanleCard() {
   console.log("productAddress", product.productAddress);
   window.location.href = product.productAddress;
+}
+const phones = product.contactPhone.split(",");
+phones.length = phones.length > 2 ? 2 : phones.length;
+function handlePhone(phone: string) {
+  console.log("phone", phone);
+  message.success("已复制联系方式");
+  // copyValue(phone);
+  toClipboard(phone);
 }
 </script>
 

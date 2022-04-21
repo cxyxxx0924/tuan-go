@@ -22,22 +22,24 @@
       </n-layout-header>
       <n-layout position="absolute" style="top: 149px">
         <n-loading-bar-provider>
-          <div class="context">
-            <router-view v-slot="{ Component }">
-              <keep-alive>
+          <n-message-provider>
+            <div class="context">
+              <router-view v-slot="{ Component }">
+                <keep-alive>
+                  <component
+                    :is="Component"
+                    v-if="$route.meta.keepAlive"
+                    :key="$route.path"
+                  />
+                </keep-alive>
                 <component
                   :is="Component"
-                  v-if="$route.meta.keepAlive"
+                  v-if="!$route.meta.keepAlive"
                   :key="$route.path"
                 />
-              </keep-alive>
-              <component
-                :is="Component"
-                v-if="!$route.meta.keepAlive"
-                :key="$route.path"
-              />
-            </router-view>
-          </div>
+              </router-view>
+            </div>
+          </n-message-provider>
         </n-loading-bar-provider>
       </n-layout>
     </n-layout>
@@ -45,7 +47,7 @@
 </template>
 <script setup lang="ts">
 import SearchBar from "components/SearchBar.vue";
-import { onMounted, ref, onActivated } from "vue";
+import { onMounted, ref, onActivated, onUpdated } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { areaOptions, categoryOptions } from "@/utils/options/index.ts";
 
@@ -70,11 +72,21 @@ onMounted(() => {
   handleSelect();
 });
 
+onUpdated(() => {
+  console.log("onUpdated");
+  getQueryKeys();
+});
 onActivated(() => {
+  console.log("onActivated");
+  getQueryKeys();
+});
+
+function getQueryKeys() {
   const { keywords } = route.query as Record<string, string>;
+  console.log("keywords", keywords);
 
   option.value.keywords = keywords ? keywords : "";
-});
+}
 
 function handleSelect() {
   const query: any = {};

@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import MaterialCard from "components/MaterialCard.vue";
 import { axios } from "@/utils/http/axios";
-import { ref, effect, onUpdated, onActivated } from "vue";
+import { ref, effect, onUpdated } from "vue";
 import { useRoute } from "vue-router";
 import { useLoadingBar } from "naive-ui";
 
@@ -60,10 +60,6 @@ onUpdated(() => {
   areaId.value = route.query.areaId;
   categoryId.value = route.query.categoryId;
   keywords.value = route.query.keywords;
-});
-
-onActivated(() => {
-  console.log("onActivated");
 });
 
 const products = ref([]);
